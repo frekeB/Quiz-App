@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap"rel="stylesheet");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap" rel ="stylesheet");
 
 @import url("https://fonts.googleapis.com/css2?family=Asap+Condensed&display=swap" rel="stylesheet");
 
@@ -164,12 +164,48 @@ body {
     background-color: #42bd46;
     color: white;
     border-color: #27a02b ;
-    animation: 1s linear;
 }
+
 .quiz-box .option-box .option.wrong{
     background-color: #f44336;
     color: white;
     border-color: #b8372e;
+    animation:  shake 1s linear;
+}
+.quiz-box .option-box .option.wrong::before{
+content: "";
+position: absolute;
+background-color:red;
+height: 30px;
+width: 30px;
+right: 15px;
+top: 10px;
+}
+@keyframes shake{
+    0%,20%,50%{
+        transf0rm: translateX(10px);
+       }
+       20%,40%{
+           transform: translateX(-10px);
+       } 
+       60%{
+        transform: translateX(-7px);
+       }
+       70%{
+        transform: translateX(7px);
+       }
+       80%{
+        transform: translateX(7px);
+       }
+       80%{
+        transform: translateX(-4px);
+       }
+       90%{
+        transform: translateX(4px);
+       }
+       100%{
+        transform: translateX(0px);
+       }
 }
 .quiz-box .answer-description {
     background-color: #ffffff;
