@@ -3,13 +3,12 @@ const optionBox = document.querySelector(".option-box");
 const currentQuestionNum = document.querySelector(".current-question-num");
 const answerDescription = document.querySelector(".answer-description");
 const nextQuestionBtn = document.querySelector(".next-question-btn");
-const questionIndex = 0;
+const correctAnswers = document.querySelector(".correct-answers");
+let questionIndex = 0;
+let score = 0;
+let number = 0;
 
-let score =0;
-let number =0;
-
-const myApp = [
-    {
+const myApp = [{
         question: " What food makes up nearly all (around 99%) of a Giant Panda’s diet?",
         options: [" fish", "Bamboo", " honey", "leaves"],
         answer: 1,
@@ -17,7 +16,7 @@ const myApp = [
     {
         question: " True or false? Mice live for up to 10 years",
         options: [" True", " False"],
-        answer: "False",
+        answer: "1",
         description: " Captive mice live for up to 2 and a half years while wild mice only live for an average of around 4 months",
     },
     {
@@ -65,16 +64,18 @@ const myApp = [
 ];
 
 function load() {
-    number ++;
+    number++;
     /* to load questions and options*/
-    questionText.innerHTML=myApp[questionIndex].question;
+    questionText.innerHTML = myApp[questionIndex].question;
     createOptions();
+    scoreBoard();
     // load question number
     currentQuestionNum.innerHTML = number + " / " + myApp.length;
 }
 
 /* to display options*/
 function createOptions() {
+    optionBox.innerHTML="";
     for (let i = 0; i < myApp[questionIndex].options.length; i++) {
         const option = document.createElement("div");
         option.innerHTML = myApp[questionIndex].options[i];
@@ -89,8 +90,9 @@ function check(ele) {
     const id = ele.id;
     if (id == myApp[questionIndex].answer) {
         ele.classList.add("correct");
-    }
-     else {
+        score++;
+        scoreBoard();
+    } else {
         ele.classList.add("wrong");
     }
 
@@ -99,23 +101,44 @@ function check(ele) {
     showNextQuestionBtn();
 }
 
-    function disableOptions() {
-        for (let i=0; i < optionBox.children.length; i++) {
+function disableOptions() {
+    for (let i = 0; i < optionBox.children.length; i++) {
         optionBox.children[i].classList.add("already-answered");
-        }
     }
+}
 
-    function showAnswerDiscription(){
-      if(typeof myApp[questionIndex].description !== 'undefined'){
-         answerDescription.classList.add("show");
-        answerDescription.innerHTML=myApp[questionIndex].description
-      }
+function showAnswerDiscription() {
+    if (typeof myApp[questionIndex].description !== 'undefined') {
+        answerDescription.classList.add("show");
+        answerDescription.innerHTML = myApp[questionIndex].description
     }
-    function showNextQuestionBtn(){
-        nextQuestionBtn.classList.add("show");
-    }
+}
 
+function hideAnswerDiscription(){
+    answerDescription.classList.remove("show");
+    answerDescription.innerHTML = "";
+}
 
-    window.onload = () => {
-        load();
-    };
+function showNextQuestionBtn(){
+    nextQuestionBtn.classList.add("show");
+}
+
+function hideNextQuestionBtn() {
+    nextQuestionBtn.classList.remove("show");
+}
+
+function scoreBoard() {
+    correctAnswers.innerHTML = score;
+}
+nextQuestionBtn.addEventListener("click", nextQuestion);
+
+function nextQuestion() {
+    questionIndex++;
+    load();
+    hideNextQuestionBtn();
+    hideAnswerDiscription();
+
+}
+window.onload = () => {
+    load();
+};
