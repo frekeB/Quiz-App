@@ -257,7 +257,7 @@ animation: fadeInRight .5s ease;
     margin-top: 20px;
     padding: 15px;
     font-weight: 500;
-    border: 2px solid #534bae;
+    border: 2px solid hsl(245, 40%, 49%);
     border-radius: 10px;
     color: #555555;
     font-family: 'Asap Condensed', sans-serif;
