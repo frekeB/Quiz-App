@@ -1,8 +1,15 @@
 const questionText = document.querySelector(".question-text");
 const optionBox = document.querySelector(".option-box");
-const questionIndex = 6;
+const currentQuestionNum = document.querySelector(".current-question-num");
+const answerDescription = document.querySelector(".answer-description");
+const nextQuestionBtn = document.querySelector(".next-question-btn");
+const questionIndex = 0;
 
-const myApp = [{
+let score =0;
+let number =0;
+
+const myApp = [
+    {
         question: " What food makes up nearly all (around 99%) of a Giant Panda’s diet?",
         options: [" fish", "Bamboo", " honey", "leaves"],
         answer: 1,
@@ -57,13 +64,17 @@ const myApp = [{
     },
 ];
 
-function load(){
+function load() {
+    number ++;
     /* to load questions and options*/
-    questionText.innerHTML = myApp[questionIndex].question;
+    questionText.innerHTML=myApp[questionIndex].question;
     createOptions();
+    // load question number
+    currentQuestionNum.innerHTML = number + " / " + myApp.length;
 }
+
 /* to display options*/
-function createOptions(){
+function createOptions() {
     for (let i = 0; i < myApp[questionIndex].options.length; i++) {
         const option = document.createElement("div");
         option.innerHTML = myApp[questionIndex].options[i];
@@ -74,18 +85,37 @@ function createOptions(){
     }
 }
 /* check for correct and wrong answer*/
-function check(ele){
-    const id=ele.id;
-    if (id==myApp[questionIndex].answer){
+function check(ele) {
+    const id = ele.id;
+    if (id == myApp[questionIndex].answer) {
         ele.classList.add("correct");
-        //console.log("correct")
     }
      else {
         ele.classList.add("wrong");
-        //console.log("wrong")
     }
+
+    disableOptions();
+    showAnswerDiscription();
+    showNextQuestionBtn();
 }
 
-window.onload = () => {
-    load();
-};
+    function disableOptions() {
+        for (let i=0; i < optionBox.children.length; i++) {
+        optionBox.children[i].classList.add("already-answered");
+        }
+    }
+
+    function showAnswerDiscription(){
+      if(typeof myApp[questionIndex].description !== 'undefined'){
+         answerDescription.classList.add("show");
+        answerDescription.innerHTML=myApp[questionIndex].description
+      }
+    }
+    function showNextQuestionBtn(){
+        nextQuestionBtn.classList.add("show");
+    }
+
+
+    window.onload = () => {
+        load();
+    };
