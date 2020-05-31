@@ -4,10 +4,11 @@ const currentQuestionNum = document.querySelector(".current-question-num");
 const answerDescription = document.querySelector(".answer-description");
 const nextQuestionBtn = document.querySelector(".next-question-btn");
 const correctAnswers = document.querySelector(".correct-answers");
-const seeResultBtn = document.querySelector("see-result-btn");
+const seeResultBtn = document.querySelector(".see-result-btn");
 let questionIndex = 0;
 let score = 0;
 let number = 0;
+let myArray= [];
 
 const myApp = [{
         question: " What food makes up nearly all (around 99%) of a Giant Panda’s diet?",
@@ -89,6 +90,14 @@ function createOptions() {
         optionBox.appendChild(option);
     }
 }
+/*generate random question
+
+function generateRandomQuestion(){
+
+
+}
+*/
+
 /* check for correct and wrong answer*/
 function check(ele) {
     const id = ele.id;
@@ -103,7 +112,7 @@ function check(ele) {
     showAnswerDiscription();
     showNextQuestionBtn();
 
-    if (number == myApp.length){
+    if (number === myApp.length){
         quizOver();
     }
 }
@@ -153,4 +162,5 @@ seeResultBtn.classList.add("show");
 
 window.onload = () => {
     load();
+    //console.log()
 };
