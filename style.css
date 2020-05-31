@@ -154,7 +154,19 @@ body {
     color: #665b49;
     cursor: pointer;
     position: relative;
+    opacity:0;
+    animation: zoomIn .3s linear forwards;
 }
+@keyframes zoomIn{
+    0%{
+        transform: scale(0.8);
+    }
+    100%{
+        transform: scale(1);
+        opacity:1;
+    }
+}
+
 .quiz-box .option-box .option.already-answered{
 pointer-events: none;
 
@@ -168,6 +180,7 @@ pointer-events: none;
 .quiz-box .option-box .option.correct{
     background-color: #42bd46;
     color: white;
+    opacity: 1;
     border-color: #27a02b ;
     animation: pulse 1s linear;
 }
@@ -200,6 +213,7 @@ pointer-events: none;
 .quiz-box .option-box .option.wrong{
     background-color: #f44336;
     color: white;
+    opacity: 1;
     border-color: hsl(4, 60%, 45%);
     animation:  shake 1s linear;
 }
