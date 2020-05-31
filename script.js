@@ -4,6 +4,7 @@ const currentQuestionNum = document.querySelector(".current-question-num");
 const answerDescription = document.querySelector(".answer-description");
 const nextQuestionBtn = document.querySelector(".next-question-btn");
 const correctAnswers = document.querySelector(".correct-answers");
+const seeResultBtn = document.querySelector("see-result-btn");
 let questionIndex = 0;
 let score = 0;
 let number = 0;
@@ -76,11 +77,14 @@ function load() {
 /* to display options*/
 function createOptions() {
     optionBox.innerHTML="";
+    let animationDelay = 0.2;
     for (let i = 0; i < myApp[questionIndex].options.length; i++) {
         const option = document.createElement("div");
         option.innerHTML = myApp[questionIndex].options[i];
         option.classList.add("option");
         option.id = i;
+        option.style.animationDelay= animationDelay+ "s";
+        animationDelay=animationDelay+0.2;
         option.setAttribute("onclick", "check(this)")
         optionBox.appendChild(option);
     }
@@ -95,10 +99,13 @@ function check(ele) {
     } else {
         ele.classList.add("wrong");
     }
-
     disableOptions();
     showAnswerDiscription();
     showNextQuestionBtn();
+
+    if (number == myApp.length){
+        quizOver();
+    }
 }
 
 function disableOptions() {
@@ -139,6 +146,11 @@ function nextQuestion() {
     hideAnswerDiscription();
 
 }
+function quizOver() {
+nextQuestionBtn.classList.remove("show");
+seeResultBtn.classList.add("show");
+}
+
 window.onload = () => {
     load();
 };
