@@ -4,10 +4,13 @@ const currentQuestionNum = document.querySelector(".current-question-num");
 const answerDescription = document.querySelector(".answer-description");
 const nextQuestionBtn = document.querySelector(".next-question-btn");
 const correctAnswers = document.querySelector(".correct-answers");
-const seeResultBtn = document.querySelector("see-result-btn");
+const seeResultBtn = document.querySelector(".see-result-btn");
+const remainingTime = document.querySelector(".remaining-time");
 let questionIndex = 0;
 let score = 0;
 let number = 0;
+let myArray = [];
+let interval;
 
 const myApp = [{
         question: " What food makes up nearly all (around 99%) of a Giant Panda’s diet?",
@@ -24,9 +27,9 @@ const myApp = [{
         question: " What is the name of the phobia that involves an abnormal fear of spiders?",
         options: [
             "Arachnophobia",
-            "spidyophobia",
-            " speciesophobia",
-            "haemeaophobia",
+            "Spidyophobia",
+            "Speciesophobia",
+            "Haemeaophobia",
         ],
         answer: 0,
     },
@@ -76,19 +79,49 @@ function load() {
 
 /* to display options*/
 function createOptions() {
-    optionBox.innerHTML="";
+    optionBox.innerHTML = "";
     let animationDelay = 0.2;
     for (let i = 0; i < myApp[questionIndex].options.length; i++) {
         const option = document.createElement("div");
         option.innerHTML = myApp[questionIndex].options[i];
         option.classList.add("option");
         option.id = i;
-        option.style.animationDelay= animationDelay+ "s";
-        animationDelay=animationDelay+0.2;
+        option.style.animationDelay = animationDelay + "s";
+        animationDelay = animationDelay + 0.2;
         option.setAttribute("onclick", "check(this)")
         optionBox.appendChild(option);
     }
 }
+//generate random question
+
+function generateRandomQuestion() {
+    const randomNumber = Math.floor(Math.random() * myApp.length);
+    let hitDuplicate = 0;
+
+    if (myArray.length == 0) {
+        questionIndex = randomNumber;
+    } else {
+        for (let i = 0; i < myArray.length; i++) {
+            if (randomNumber == myArray[i]) {
+                //if duplicate is found
+                hitDuplicate = 1;
+                //console.log("duplicate is found": " + randomNumber);
+            }
+        }
+        if (hitDuplicate == 1) {
+            generateRandomQuestion();
+            return;
+        } else {
+            questionIndex = randomNumber;
+        }
+    }
+    myArray.push(randomNumber);
+    console.log(myArray)
+    load();
+}
+
+
+
 /* check for correct and wrong answer*/
 function check(ele) {
     const id = ele.id;
@@ -98,15 +131,45 @@ function check(ele) {
         scoreBoard();
     } else {
         ele.classList.add("wrong");
+        //show correct option when clicked answer is wrong.
+        for(let i=0; i<optionBox.children.length; i++){
+            if(optionBox.children[i].id==myApp[questionIndex].answer){
+                optionBox.children[i].classList.add("show-correct");
+            }
+        }
     }
     disableOptions();
     showAnswerDiscription();
     showNextQuestionBtn();
+    stopTimer();
 
-    if (number == myApp.length){
+    if (number === myApp.length) {
         quizOver();
     }
 }
+
+function startTimer() {
+    let timeLimit = 15;
+    remainingTime.innerHTML = timeLimit;
+    interval = setInterval(() => {
+        timeLimit--;
+        if (timeLimit < 10) {
+            timeLimit = "0" + timeLimit;
+        }
+        if (timeLimit < 6) {
+            remainingTime.classList.add("less-time")
+        }
+        remainingTime.innerHTML = timeLimit;
+        if (timeLimit == 0) {
+            clearInterval(interval);
+        }
+
+    }, 1000)
+}
+
+    function stopTimer() {
+        clearInterval(interval);
+    }
 
 function disableOptions() {
     for (let i = 0; i < optionBox.children.length; i++) {
@@ -121,12 +184,12 @@ function showAnswerDiscription() {
     }
 }
 
-function hideAnswerDiscription(){
+function hideAnswerDiscription() {
     answerDescription.classList.remove("show");
     answerDescription.innerHTML = "";
 }
 
-function showNextQuestionBtn(){
+function showNextQuestionBtn() {
     nextQuestionBtn.classList.add("show");
 }
 
@@ -141,16 +204,19 @@ nextQuestionBtn.addEventListener("click", nextQuestion);
 
 function nextQuestion() {
     questionIndex++;
-    load();
+    generateRandomQuestion();
     hideNextQuestionBtn();
     hideAnswerDiscription();
 
 }
+
 function quizOver() {
-nextQuestionBtn.classList.remove("show");
-seeResultBtn.classList.add("show");
+    nextQuestionBtn.classList.remove("show");
+    seeResultBtn.classList.add("show");
 }
 
 window.onload = () => {
-    load();
+    //load();
+    startTimer();
+    generateRandomQuestion();
 };

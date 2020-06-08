@@ -74,7 +74,7 @@ body {
     /*background-color: red;*/
 }
 
-.quiz-box .stats .remaining-time {
+.quiz-box .stats .quiz-time .remaining-time {
     height: 60px;
     width: 60px;
     background-color: #1a237e ;
@@ -84,6 +84,11 @@ body {
     line-height: 58px;
     text-align: center;
     font-weight: 800;
+}
+.quiz-box .stats .quiz-time .remaining-time.less-time{
+color: #f44336;
+background-color: #ffffff;
+border-color: #f44336;
 }
 
 .quiz-box .stats .score-board {
